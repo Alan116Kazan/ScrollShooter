@@ -15,23 +15,29 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D _rb;
     private SpriteRenderer _spriteRenderer;
+    private Collider2D _collider;
     private Vector2 _moveDirection;
     private bool _isGrounded;
+
+
+    public Vector2 Velocity => _rb.velocity;
+    public bool IsGrounded => _isGrounded;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<Collider2D>();
     }
 
     private void Update()
     {
-        GroundCheck();
         CharacterRotate();
     }
 
     private void FixedUpdate()
     {
+        GroundCheck();
         HorizontalMovement();
     }
 
@@ -53,6 +59,10 @@ public class PlayerMovement : MonoBehaviour
         if (_moveDirection.x != 0)
         {
             _spriteRenderer.flipX = _moveDirection.x < 0;
+
+            Vector2 offset = _collider.offset;
+            offset.x = Mathf.Abs(offset.x) * (_spriteRenderer.flipX ? 1 : -1);
+            _collider.offset = offset;
         }
     }
 
@@ -65,15 +75,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void GroundCheck()
     {
-        _isGrounded = Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _groundLayer);
+        _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, _groundCheckDistance, _groundLayer);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (_groundCheck != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(_groundCheck.position, _groundCheck.position + Vector3.down * _groundCheckDistance);
-        }
-    }
 }

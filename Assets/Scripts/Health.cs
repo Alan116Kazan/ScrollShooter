@@ -4,10 +4,12 @@ using UnityEngine.Events;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float _maxHealth;
+
     private float _currentHealth;
     private bool _isAlive;
 
-    // Событие, которое срабатывает при смерти
+    public bool IsAlive => _isAlive;
+
     public event UnityAction OnDeath;
 
     private void Awake()
@@ -16,11 +18,9 @@ public class Health : MonoBehaviour
         _isAlive = true;
     }
 
-    public bool IsAlive => _isAlive;
-
     public void TakeDamage(float damage)
     {
-        if (!_isAlive) return;  // Если уже мертв, игнорируем урон
+        if (!_isAlive) return;
 
         _currentHealth -= damage;
         CheckIsAlive();
@@ -31,7 +31,7 @@ public class Health : MonoBehaviour
         if (_currentHealth <= 0 && _isAlive)
         {
             _isAlive = false;
-            OnDeath?.Invoke();  // Вызываем событие смерти
+            OnDeath?.Invoke();
         }
     }
 

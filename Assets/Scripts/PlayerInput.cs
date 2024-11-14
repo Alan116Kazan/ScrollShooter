@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovement), typeof(Bow))]
+[RequireComponent(typeof(PlayerMovement), typeof(PlayerAttack))]
 public class PlayerInput : MonoBehaviour
 {
     public const string HorizontalAxis = "Horizontal";
@@ -8,16 +8,28 @@ public class PlayerInput : MonoBehaviour
     public const string ShootButton = "Fire1";
 
     private PlayerMovement _playerMovement;
-    private Bow _bow;
+    private PlayerAttack _playerAttack;
 
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
-        _bow = GetComponent<Bow>();
+        _playerAttack = GetComponent<PlayerAttack>();
     }
 
     private void Update()
     {
+        HandleMovement();
+        HandleAttack();
+    }
+
+    private void HandleMovement()
+    {
+        if (_playerAttack.IsFiring)
+        {
+            _playerMovement.SetMoveDirection(Vector2.zero);
+            return;
+        }
+
         float moveInput = Input.GetAxis(HorizontalAxis);
         _playerMovement.SetMoveDirection(new Vector2(moveInput, 0));
 
@@ -25,10 +37,18 @@ public class PlayerInput : MonoBehaviour
         {
             _playerMovement.Jump();
         }
+    }
 
+    private void HandleAttack()
+    {
         if (Input.GetButtonDown(ShootButton))
         {
-            _bow.Shoot();
+            _playerAttack.StartAttack();
+        }
+
+        if (Input.GetButtonUp(ShootButton))
+        {
+            _playerAttack.EndAttack();
         }
     }
 }
