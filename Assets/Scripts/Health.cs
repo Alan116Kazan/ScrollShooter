@@ -6,41 +6,30 @@ public class Health : MonoBehaviour
     [SerializeField] private float _maxHealth;
 
     private float _currentHealth;
-    private bool _isAlive;
 
-    public bool IsAlive => _isAlive;
+    public bool IsAlive => _currentHealth > 0;
+    public float CurrentHealth => _currentHealth;
+    public float MaxHealth => _maxHealth;
 
     public event UnityAction OnDeath;
 
     private void Awake()
     {
         _currentHealth = _maxHealth;
-        _isAlive = true;
     }
 
     public void TakeDamage(float damage)
     {
-        if (!_isAlive) return;
-
         _currentHealth -= damage;
-        CheckIsAlive();
-    }
-
-    private void CheckIsAlive()
-    {
-        if (_currentHealth <= 0 && _isAlive)
+        if (_currentHealth <= 0)
         {
-            _isAlive = false;
+            _currentHealth = 0;
             OnDeath?.Invoke();
         }
     }
 
-    public void RestoreHealth(float amount)
+    public void Heal(float amount)
     {
         _currentHealth = Mathf.Min(_currentHealth + amount, _maxHealth);
-        if (_currentHealth > 0)
-        {
-            _isAlive = true; // Возвращаем персонажа к жизни, если его здоровье восстановлено
-        }
     }
 }

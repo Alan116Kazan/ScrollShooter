@@ -3,6 +3,7 @@ using UnityEngine;
 public class DamageDealer : MonoBehaviour
 {
     [SerializeField] private float _damage;
+    [SerializeField] private bool _destroyOnHit = true;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,7 +15,10 @@ public class DamageDealer : MonoBehaviour
                 targetHealth.TakeDamage(_damage);
             }
 
-            Destroy(gameObject);
+            if (_destroyOnHit)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

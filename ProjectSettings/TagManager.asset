@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Damageable
+  - EnemyStopper
   layers:
   - Default
   - TransparentFX
@@ -13,9 +14,9 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - Stopper
   - 
   - 
   - 
@@ -41,4 +42,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 1895976797
+    locked: 0
+  - name: Objects
+    uniqueID: 3999974833
+    locked: 0
+  - name: Player
+    uniqueID: 1850943919
     locked: 0
