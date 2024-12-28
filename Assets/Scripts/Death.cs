@@ -1,49 +1,61 @@
 using UnityEngine;
-using System.Collections;
+using System;
 
+/// <summary>
+/// Класс, отвечающий за обработку смерти объекта и управление связанными событиями.
+/// </summary>
 [RequireComponent(typeof(Health))]
 public class Death : MonoBehaviour
 {
-    [Header("Death Settings")]
-    [SerializeField] private GameObject _gameoverPanel;
+    /// <summary>
+    /// Событие, которое вызывается при смерти объекта.
+    /// </summary>
+    public event Action OnDeathEvent;
+
+    [Header("Настройки")]
+    [Tooltip("Скрипт, управляющий движением объекта, который нужно отключить при смерти.")]
     [SerializeField] private MonoBehaviour _movementScript;
 
     private Health _health;
-    private bool _isDead = false;
 
     private void Awake()
     {
         _health = GetComponent<Health>();
+
+        // Подписываемся на событие смерти из компонента здоровья
         _health.OnDeath += HandleDeath;
     }
 
+    /// <summary>
+    /// Обрабатывает смерть объекта.
+    /// </summary>
     private void HandleDeath()
     {
-        if (_isDead) return;
-
-        _isDead = true;
-
+        // Отключаем скрипт движения, если он указан
         if (_movementScript != null)
         {
             _movementScript.enabled = false;
         }
 
-        if (_gameoverPanel != null)
-        {
-            _gameoverPanel.SetActive(true);
-        }
-
-        StartCoroutine(DestroyAfterDelay(2f));
+        // Вызываем событие смерти
+        OnDeathEvent?.Invoke();
     }
 
-    private IEnumerator DestroyAfterDelay(float delay)
+    /// <summary>
+    /// Включает управление движением объекта.
+    /// </summary>
+    public void EnableMovement()
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(gameObject);
+        // Включаем движение, если скрипт присутствует
+        if (_movementScript != null)
+        {
+            _movementScript.enabled = true;
+        }
     }
 
     private void OnDestroy()
     {
+        // Отписываемся от события смерти
         _health.OnDeath -= HandleDeath;
     }
 }

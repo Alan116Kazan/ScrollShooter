@@ -1,7 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// ”правл€ет смещением и активацией коллайдера урона в зависимости от направлени€ персонажа.
+/// </summary>
 public class DamageCollider : MonoBehaviour
 {
+    [Header("Ќастройки коллайдера")]
+    [Tooltip(" оллайдер, отвечающий за нанесение урона.")]
     [SerializeField] private Collider2D _damageCollider;
 
     private SpriteRenderer _spriteRenderer;
@@ -22,13 +27,17 @@ public class DamageCollider : MonoBehaviour
 
     private void Update()
     {
+        ColliderFlip();
+    }
+
+    private void ColliderFlip()
+    {
         if (_spriteRenderer.flipX != _lastFlipX)
         {
             _lastFlipX = _spriteRenderer.flipX;
             UpdateColliderOffset();
         }
     }
-
     private void UpdateColliderOffset()
     {
         Vector2 newOffset = _originalOffset;

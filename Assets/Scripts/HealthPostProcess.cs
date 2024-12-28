@@ -1,69 +1,67 @@
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
+/// <summary>
+/// Класс для управления эффектами постобработки на основе здоровья игрока.
+/// </summary>
+[RequireComponent(typeof(Health))]
 public class HealthPostProcess : MonoBehaviour
 {
-    [SerializeField] private Health _playerHealth; // Ссылка на компонент Health игрока
-    [SerializeField] private PostProcessVolume _postProcessVolume; // Ссылка на PostProcessVolume
+    [Header("Настройки")]
+    [SerializeField] private PostProcessVolume _postProcessVolume;
 
+    private Health _playerHealth;
     private ChromaticAberration _chromaticAberration;
     private Vignette _vignette;
 
-    private float _vignettePulseAmplitude = 0.1f;
-    private float _heartbeatSpeed = 2f; // Скорость пульсации виньетки
+    private const float VignettePulseAmplitude = 0.1f;
+    private const float HeartbeatSpeed = 2f;
+    private const float LowHealthThreshold = 30f;
 
-    private void Start()
+    private void Awake()
     {
-        // Проверяем наличие необходимых компонентов
-        if (_playerHealth == null)
+        _playerHealth = GetComponent<Health>();
+
+        if (_postProcessVolume == null || _postProcessVolume.profile == null)
         {
-            Debug.LogError("PlayerHealth не назначен в инспекторе!");
+            Debug.LogError("PostProcessVolume или его профиль не назначен в HealthPostProcess.");
+            enabled = false;
             return;
         }
 
-        if (_postProcessVolume == null)
+        // Получаем настройки постобработки
+        if (!_postProcessVolume.profile.TryGetSettings(out _chromaticAberration))
         {
-            Debug.LogError("PostProcessVolume не назначен в инспекторе!");
-            return;
+            Debug.LogWarning("Chromatic Aberration не найден в профиле PostProcessVolume.");
         }
 
-        // Получаем компоненты Chromatic Aberration и Vignette из PostProcessVolume
-        if (_postProcessVolume.profile.TryGetSettings(out _chromaticAberration))
+        if (!_postProcessVolume.profile.TryGetSettings(out _vignette))
         {
-            _chromaticAberration.intensity.value = 0f;
-        }
-        else
-        {
-            Debug.LogWarning("Chromatic Aberration не настроен в профиле PostProcessVolume.");
-        }
-
-        if (_postProcessVolume.profile.TryGetSettings(out _vignette))
-        {
-            _vignette.intensity.value = 0f;
-        }
-        else
-        {
-            Debug.LogWarning("Vignette не настроен в профиле PostProcessVolume.");
+            Debug.LogWarning("Vignette не найдена в профиле PostProcessVolume.");
         }
     }
 
     private void Update()
     {
-        // Прекращаем выполнение, если ссылки или компоненты отсутствуют
-        if (_playerHealth == null || _chromaticAberration == null || _vignette == null) return;
+        ApplyPostProcessingEffects();
+    }
 
-        // Проверяем здоровье и изменяем интенсивность Chromatic Aberration
-        _chromaticAberration.intensity.value = _playerHealth.CurrentHealth < 30f ? 1f : 0f;
+    /// <summary>
+    /// Применяет эффекты постобработки в зависимости от здоровья игрока.
+    /// </summary>
+    private void ApplyPostProcessingEffects()
+    {
+        if (_playerHealth == null || _chromaticAberration == null || _vignette == null)
+            return;
 
-        // Если здоровье меньше 30, активируем пульсацию Vignette
-        if (_playerHealth.CurrentHealth < 30f)
-        {
-            float pulse = Mathf.Sin(Time.time * _heartbeatSpeed) * 0.5f + 0.5f; // Генерация значения от 0 до 1
-            _vignette.intensity.value = 0.3f + pulse * _vignettePulseAmplitude; // Пульсация от 0.3 до 0.4
-        }
-        else
-        {
-            _vignette.intensity.value = 0f; // Сбрасываем интенсивность в 0
-        }
+        bool isLowHealth = _playerHealth.CurrentHealth < LowHealthThreshold;
+
+        // Настройка хроматической аберрации
+        _chromaticAberration.intensity.value = isLowHealth ? 1f : 0f;
+
+        // Настройка виньетки
+        _vignette.intensity.value = isLowHealth
+            ? 0.3f + Mathf.Sin(Time.time * HeartbeatSpeed) * 0.5f * VignettePulseAmplitude
+            : 0f;
     }
 }

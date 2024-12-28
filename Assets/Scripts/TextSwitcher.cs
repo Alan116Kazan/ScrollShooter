@@ -3,11 +3,12 @@ using UnityEngine.UI;
 
 public class TextSwitcher : MonoBehaviour
 {
-    [SerializeField] private Text displayText;
+    [Header("UI Text Component")]
+    [SerializeField] private Text displayText; // Ссылка на компонент Text для отображения текста
 
     private int currentIndex = 0;
 
-    
+    // Массив текстов для переключения
     private readonly string[] texts =
     {
         "Первый текст",
@@ -16,12 +17,27 @@ public class TextSwitcher : MonoBehaviour
         "Четвертый текст"
     };
 
+    // Метод для переключения текста
     public void SwitchText()
     {
-        if (displayText == null) return;
+        // Если displayText не назначен, выходим из метода
+        if (displayText == null)
+        {
+            Debug.LogWarning("Текст не назначен");
+            return;
+        }
 
+        // Проверяем, что массив texts не пустой
+        if (texts.Length == 0)
+        {
+            Debug.LogWarning("Массив текста пустой.");
+            return;
+        }
+
+        // Устанавливаем текст на основе текущего индекса
         displayText.text = texts[currentIndex];
 
+        // Обновляем индекс для следующего текста
         currentIndex = (currentIndex + 1) % texts.Length;
     }
 }
