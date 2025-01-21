@@ -32,8 +32,8 @@ public class DestroyOnDeath : MonoBehaviour
     /// </summary>
     private void HandleDeath()
     {
-        // Запускаем корутину для удаления объекта через 2 секунды после смерти
-        StartCoroutine(DestroyAfterDelay(2f));
+        // Запускаем корутину для удаления объекта через 1 секунды после смерти
+        StartCoroutine(DestroyAfterDelay(1f));
     }
 
     /// <summary>

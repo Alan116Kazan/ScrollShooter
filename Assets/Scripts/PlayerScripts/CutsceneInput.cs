@@ -7,10 +7,12 @@ using UnityEngine;
 public class CutsceneInput : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
+    private PlayerInput _playerInput;
 
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
+        _playerInput = GetComponent<PlayerInput>();
     }
 
     /// <summary>
@@ -44,5 +46,35 @@ public class CutsceneInput : MonoBehaviour
     public void Stop()
     {
         SetMovement(0f);
+    }
+
+    /// <summary>
+    /// Включает управление игроком.
+    /// </summary>
+    public void PlayerInputOn()
+    {
+        if (_playerInput != null)
+        {
+            _playerInput.enabled = true;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerInput компонент отсутствует на объекте.");
+        }
+    }
+
+    /// <summary>
+    /// Отключает управление игроком.
+    /// </summary>
+    public void PlayerInputOff()
+    {
+        if (_playerInput != null)
+        {
+            _playerInput.enabled = false;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerInput компонент отсутствует на объекте.");
+        }
     }
 }
