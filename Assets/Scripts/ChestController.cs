@@ -1,12 +1,11 @@
 using UnityEngine;
 
 /// <summary>
-/// Класс, который управляет сундуком с аптечкой
+/// Класс, который управляет сундуком с очками
 /// </summary>
 public class ChestController : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float _healAmount;
     [SerializeField] private LayerMask _playerLayer;
 
     [Header("References")]
@@ -14,8 +13,8 @@ public class ChestController : MonoBehaviour
     [SerializeField] private ParticleSystem _chestOpenEffect;
 
     private ChestAnimation _chestAnimation;
-    private Health _playerHealth;
     private bool _isPlayerInZone;
+    private int _points = 50;
 
     private void Awake()
     {
@@ -36,7 +35,6 @@ public class ChestController : MonoBehaviour
         {
             _instructionPanel.ShowInstruction("Нажмите F чтобы открыть сундук");
             _isPlayerInZone = true;
-            _playerHealth = collision.GetComponent<Health>();
         }
     }
 
@@ -46,7 +44,6 @@ public class ChestController : MonoBehaviour
         {
             _instructionPanel.HideInstruction();
             _isPlayerInZone = false;
-            _playerHealth = null;
         }
     }
 
@@ -54,7 +51,7 @@ public class ChestController : MonoBehaviour
     {
         _chestAnimation?.ChestOpen();
         _instructionPanel.HideInstruction();
-        _playerHealth?.Heal(_healAmount);
+        ScoreManager.Instance.IncreaseScore(_points);
         _chestOpenEffect?.Play();
     }
 

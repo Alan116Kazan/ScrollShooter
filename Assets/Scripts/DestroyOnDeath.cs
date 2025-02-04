@@ -2,13 +2,14 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// Класс для управления уничтожением объекта после смерти.
-/// Удаляет объект через определенную задержку после смерти.
+/// Удаляет объект после смерти с задержкой и начисляет очки.
 /// </summary>
 [RequireComponent(typeof(Death))]
 public class DestroyOnDeath : MonoBehaviour
 {
     private Death _death;
+
+    private int _points = 10; // Очки за уничтожение объекта
 
     private void Awake()
     {
@@ -23,29 +24,25 @@ public class DestroyOnDeath : MonoBehaviour
 
     private void OnDisable()
     {
-        // Отписываемся от события смерти при отключении объекта
+        // Отписываемся от события смерти
         _death.OnDeathEvent -= HandleDeath;
     }
 
     /// <summary>
-    /// Обработчик события смерти: инициирует удаление объекта.
+    /// Вызывается при смерти объекта, начисляет очки и удаляет объект.
     /// </summary>
     private void HandleDeath()
     {
-        // Запускаем корутину для удаления объекта через 1 секунды после смерти
+        ScoreManager.Instance.IncreaseScore(_points);
         StartCoroutine(DestroyAfterDelay(1f));
     }
 
     /// <summary>
-    /// Уничтожает объект через заданную задержку.
+    /// Удаляет объект через заданное время.
     /// </summary>
-    /// <param name="delay">Время задержки в секундах.</param>
     private IEnumerator DestroyAfterDelay(float delay)
     {
-        // Ждем заданное количество времени перед уничтожением объекта
         yield return new WaitForSeconds(delay);
-
-        // Удаляем объект
         Destroy(gameObject);
     }
 }
