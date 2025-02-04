@@ -13,11 +13,13 @@ public class PlayerRespawnController : MonoBehaviour
 
     private Death _playerDeath;
     private Health _playerHealth;
+    private ArcherAnimations _archerAnimations;
 
     private void Awake()
     {
         _playerDeath = GetComponent<Death>();
         _playerHealth = GetComponent<Health>();
+        _archerAnimations = GetComponent<ArcherAnimations>();
 
         // Подписываемся на событие смерти игрока
         _playerDeath.OnDeathEvent += ShowGameOverPanel;
@@ -44,6 +46,7 @@ public class PlayerRespawnController : MonoBehaviour
     {
         RespawnAtCheckpoint();
         _playerDeath.EnableMovement(); // Возвращает возможность движения
+        _archerAnimations.LandedOff();
     }
 
     /// <summary>

@@ -10,6 +10,7 @@ public class SceneController : MonoBehaviour
     /// <param name="sceneName">Имя сцены для загрузки.</param>
     public void OpenScene(string sceneName)
     {
+        Time.timeScale = 1f;
         // Проверка, существует ли сцена с таким именем
         if (SceneExists(sceneName))
         {

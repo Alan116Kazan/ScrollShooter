@@ -34,7 +34,7 @@ public class ChestController : MonoBehaviour
     {
         if (IsPlayer(collision.gameObject))
         {
-            _instructionPanel.ShowInstruction("Press F to open the chest");
+            _instructionPanel.ShowInstruction("Нажмите F чтобы открыть сундук");
             _isPlayerInZone = true;
             _playerHealth = collision.GetComponent<Health>();
         }

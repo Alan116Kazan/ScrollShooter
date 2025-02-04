@@ -9,25 +9,24 @@ public class TextSwitcher : MonoBehaviour
     private int currentIndex = 0;
 
     // Массив текстов для переключения
-    private readonly string[] texts =
+    private string[] texts =
     {
-        "Первый текст",
-        "Второй текст",
-        "Третий текст",
-        "Четвертый текст"
+        "Разработчик\nАлан Фарниев",
+        "Звукорежиссер\nАлан Фарниев",
+        "Scroll Shooter"
     };
 
     // Метод для переключения текста
     public void SwitchText()
     {
-        // Если displayText не назначен, выходим из метода
+        // Проверяем, что displayText назначен
         if (displayText == null)
         {
-            Debug.LogWarning("Текст не назначен");
+            Debug.LogWarning("Текст не назначен.");
             return;
         }
 
-        // Проверяем, что массив texts не пустой
+        // Проверяем, что массив texts не пуст
         if (texts.Length == 0)
         {
             Debug.LogWarning("Массив текста пустой.");

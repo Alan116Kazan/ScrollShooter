@@ -18,15 +18,12 @@ public class SwitcherController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Проверяем, что объект, столкнувшийся с рычагом, имеет тег "Arrow"
         if (collision.CompareTag("Arrow"))
         {
             _switcherAnimation.ActivateSwitcher();
 
-            // Устанавливаем bodyType на Dynamic
             _anvilRigidbody.bodyType = RigidbodyType2D.Dynamic;
 
-            // Уничтожаем стрелу после попадания (опционально)
             Destroy(collision.gameObject);
         }
     }
