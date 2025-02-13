@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0c54d6def23341af3644635e3f89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healAmount: 20
+  _healAmount: 0
 --- !u!1 &6549017483559885252
 GameObject:
   m_ObjectHideFlags: 0
@@ -4942,7 +4942,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -294992463
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0

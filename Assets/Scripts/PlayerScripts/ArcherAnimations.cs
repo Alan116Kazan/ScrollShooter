@@ -39,7 +39,7 @@ public class ArcherAnimations : MonoBehaviour
     /// </summary>
     private void UpdateRunAndFlyAnimation()
     {
-        bool isMoving = Mathf.Abs(_playerMovement.Velocity.x) > 0.1f;
+        bool isMoving = Mathf.Abs(_playerMovement.Velocity.x) > 0.6f;
         bool isGrounded = _playerMovement.IsGrounded;
 
         _animator.SetBool("IsRunning", isMoving && isGrounded);

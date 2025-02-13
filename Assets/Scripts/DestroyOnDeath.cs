@@ -34,7 +34,7 @@ public class DestroyOnDeath : MonoBehaviour
     private void HandleDeath()
     {
         ScoreManager.Instance.IncreaseScore(_points);
-        StartCoroutine(DestroyAfterDelay(1f));
+        StartCoroutine(DestroyAfterDelay(0.5f));
     }
 
     /// <summary>

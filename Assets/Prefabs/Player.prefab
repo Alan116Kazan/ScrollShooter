@@ -419,7 +419,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b4e030798f8ff84a9eca8f12f53e876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameoverPanel: {fileID: 0}
   _movementScript: {fileID: 2721077620256591028}
 --- !u!114 &4718859678560631374
 MonoBehaviour:
@@ -445,3 +444,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1da788c4eb76dc44f9acfde9fbb5bd63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _chargeTime: 0.3
